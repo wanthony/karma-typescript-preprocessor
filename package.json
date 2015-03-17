@@ -17,11 +17,13 @@
   "contributors": [
     "Sergey Todyshev <stodyshev@gmail.com>",
     "James Whitney <james@whitney.io>",
-    "Keats <balthek@gmail.com>"
+    "Keats <balthek@gmail.com>",
+    "Anthony White <awhite@dataxu.com>"
   ],
   "dependencies": {
     "node-tsc": "0.0.11",
-    "lodash": "~3.5.0"
+    "lodash": "~3.5.0",
+    "typescript-compiler": "~1.4.1"
   },
   "devDependencies": {
     "typescript": "^1.4",
