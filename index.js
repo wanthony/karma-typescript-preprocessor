@@ -71,14 +71,34 @@ function tsc(file, content, options, callback, log) {
   var opts = ['--out ' + output];
 
   if ( options.sourceMap ) {
-    opts.push("--sourceMap");
+    opts.push('--sourceMap');
+    file.sourceMapPath = output + '.map';
   }
 
-  var compiled = ts.compile(file.originalPath, opts.join(' '), null, function(msg) {
+  if ( options.target ) {
+    opts.push('--target ' + options.target);
+  }
+
+  if ( options.module ) {
+    opts.push('--module ' + options.module);
+  }
+
+  if ( options.noImplicitAny ) {
+    opts.push('--noImplicitAny');
+  }
+
+  if ( options.removeComments ) {
+    opts.push('--removeComments');
+  }
+
+  ts.compile(file.originalPath, opts.join(' '), null, function(msg) {
     log.error(msg.formattedMessage);
   });
 
-  callback(null, compiled);
+  fs.readFile(output, 'utf8', function(err, data) {
+    fs.unlinkSync(output);
+    callback(null, data);
+  });
 }
 
 createTypeScriptPreprocessor.$inject = ['args', 'config.typescriptPreprocessor', 'logger', 'helper'];
