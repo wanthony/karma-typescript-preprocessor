@@ -65,12 +65,20 @@ function tsc(file, content, options, callback, log) {
 	var args = _.clone(options);
 	var input  = file.originalPath + '.ktp.ts';
 	var output = file.originalPath + '.ktp.js';
-	file.outputPath = output + '.ktp.js';
-	file.sourceMapPath = output + '.map';
 
 	log.debug('preprocessed "%s"', file.originalPath);
 
-  callback(null, ts.compileString(content));
+  var opts = ['--out ' + output];
+
+  if ( options.sourceMap ) {
+    opts.push("--sourceMap");
+  }
+
+  var compiled = ts.compile(file.originalPath, opts.join(' '), null, function(msg) {
+    log.error(msg.formattedMessage);
+  });
+
+  callback(null, compiled);
 }
 
 createTypeScriptPreprocessor.$inject = ['args', 'config.typescriptPreprocessor', 'logger', 'helper'];
